@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería con Menú Lateral</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-image: url('h.jpg'); /* Cambia por tu imagen */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh; /* Mantiene el fondo en toda la altura de la pantalla */
+        }
+
+        /* Estilos del menú lateral */
+        .sidenav {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px; /* Oculto inicialmente */
+            background-color: rgba(17, 17, 17, 0.8); /* Fondo transparente */
+            padding-top: 20px;
+            transition: left 0.3s ease; /* Animación de desplazamiento */
+            z-index: 1000; /* Asegura que esté en primer plano */
+        }
+
+        .sidenav a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            background-color: #575757;
+        }
+
+        /* Estilos del contenido principal */
+        .main {
+            margin-left: 0; /* Sin margen, las imágenes ocuparán el espacio completo */
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            transition: margin-left 0.3s ease; /* Suaviza la transición del contenido */
+        }
+
+        .gallery {
+            display: none;
+        }
+
+        .gallery img {
+            width: 300px;
+            height: auto;
+            margin: 10px;
+            border: 5px solid white;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeIn 1s forwards;
+        }
+
+        .gallery.active {
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Animaciones para las galerías */
+        img:nth-child(1) { animation-delay: 0.5s; }
+        img:nth-child(2) { animation-delay: 1s; }
+        img:nth-child(3) { animation-delay: 1.5s; }
+
+        /* Más galerías */
+        .gallery:nth-of-type(2) img:nth-child(1) { animation-delay: 0.5s; }
+        .gallery:nth-of-type(2) img:nth-child(2) { animation-delay: 1s; }
+        .gallery:nth-of-type(2) img:nth-child(3) { animation-delay: 1.5s; }
+
+        .gallery:nth-of-type(3) img:nth-child(1) { animation-delay: 0.5s; }
+        .gallery:nth-of-type(3) img:nth-child(2) { animation-delay: 1s; }
+        .gallery:nth-of-type(3) img:nth-child(3) { animation-delay: 1.5s; }
+
+        /* Estilos para el botón de menú */
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #111;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1001; /* Asegura que esté en primer plano */
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-button:hover {
+            background-color: #575757;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botón para abrir/cerrar el menú -->
+    <button class="menu-button" onclick="toggleMenu()">☰</button>
+
+    <!-- Menú lateral -->
+    <div id="menu" class="sidenav">
+        <a href="#" onclick="showGallery('gallery1')">Galería 1</a>
+        <a href="#" onclick="showGallery('gallery2')">Galería 2</a>
+        <a href="#" onclick="showGallery('gallery3')">Galería 3</a>
+        <a href="#" onclick="toggleMenu()">Cerrar</a>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main" id="main-content">
+        <h1>Selecciona una Galería</h1>
+
+        <!-- Galería 1 -->
+        <div id="gallery1" class="gallery">
+            <img src="briar1.jpg" alt="Imagen 1">
+            <img src="briar2.jpg" alt="Imagen 2">
+            <img src="briar3.jpg" alt="Imagen 3">
+            <img src="briar4.jpg" alt="Imagen 4">
+            <img src="briar5.jpg" alt="Imagen 5">
+        </div>
+
+        <!-- Galería 2 -->
+        <div id="gallery2" class="gallery">
+            <img src="neeko.jpg" alt="Imagen 1">
+            <img src="neekokda.jpg" alt="Imagen 2">
+            <img src="neeko2.jpg" alt="Imagen 3">
+        </div>
+
+        <!-- Galería 3 -->
+        <div id="gallery3" class="gallery">
+            <img src="uraraka1.jpg" alt="Imagen 1">
+            <img src="uraraka2.jpg" alt="Imagen 2">
+            <img src="toga1.jpg" alt="Imagen 3">
+            <img src="toga2.jpg" alt="Imagen 4">
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar la galería seleccionada
+        function showGallery(galleryId) {
+            const galleries = document.querySelectorAll('.gallery');
+            galleries.forEach(gallery => {
+                gallery.classList.remove('active');
+            });
+            document.getElementById(galleryId).classList.add('active');
+            toggleMenu(); // Cierra el menú después de seleccionar una galería
+            document.getElementById('main-content').style.marginLeft = '0'; // Asegura que el contenido ocupa todo el espacio
+        }
+
+        // Función para abrir/cerrar el menú lateral
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const mainContent = document.getElementById('main-content');
+
+            if (menu.style.left === '0px') {
+                menu.style.left = '-250px'; // Oculta el menú
+                mainContent.style.marginLeft = '0'; // El contenido ocupa todo el espacio
+            } else {
+                menu.style.left = '0px'; // Muestra el menú
+                mainContent.style.marginLeft = '250px'; // El contenido se ajusta
+            }
+        }
+    </script>
+
+</body>
+</html>
